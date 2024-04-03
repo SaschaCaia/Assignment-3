@@ -1,18 +1,18 @@
-// Initialize the map
+// Map inizialize and size
 var map = L.map("map").setView([55.7, 12.6], 10);
  
-// Adds a base map
+// Will add a base map to it
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "&copy; OpenStreetMap contributors",
 }).addTo(map);
  
-// Loads shipwrecks GeoJSON data from the GitHub
+// Loads the shipwrecks GeoJSON data file from GitHub trough the link
 fetch("https://raw.githubusercontent.com/SaschaCaia/Assignment-3/main/shipwrecks.geojson")
   .then((response) => response.json())
   .then((shipwrecksData) => {
     console.log("GeoJSON Data:", shipwrecksData);
  
-    // Creates the shipwrecks layer with customs popups and markers style
+    // Will create shipwrecks layer with customs popup and markers styles
     var shipwrecksLayer = L.geoJSON(shipwrecksData, {
       onEachFeature: function (feature, layer) {
         layer.bindPopup("Era: " + feature.properties.datering);
@@ -29,7 +29,7 @@ fetch("https://raw.githubusercontent.com/SaschaCaia/Assignment-3/main/shipwrecks
       },
     });
  
-    // Create a marker cluster group for shipwrecks
+    // This creates an marker clustergroup for the shipwrecks, in a chosen color of green.
     var shipwrecksCluster = L.markerClusterGroup({
       iconCreateFunction: function (cluster) {
         return L.divIcon({
@@ -44,7 +44,7 @@ fetch("https://raw.githubusercontent.com/SaschaCaia/Assignment-3/main/shipwrecks
     // Add shipwrecks layer to the map
     map.addLayer(shipwrecksCluster);
  
-    // Fit the map bounds to the shipwrecks layer
+    // Fits the map bounds to the shipwrecks layer
     map.fitBounds(shipwrecksLayer.getBounds());
   })
   .catch((error) => {
